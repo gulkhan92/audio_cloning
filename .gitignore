@@ -1,0 +1,26 @@
+# Create .gitignore file
+cat > .gitignore << EOF
+# Python virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large model files
+*.db
+*.dic
+*.dylib
+*.so
+*.bin
+*.pt
+*.pth
+
+# IDE files
+.vscode/
+.idea/
+EOF
