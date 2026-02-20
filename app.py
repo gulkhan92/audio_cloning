@@ -720,7 +720,7 @@ def main():
     st.markdown("---")
     st.markdown(
         "<div style='text-align: center; color: #888; padding: 1rem;'>"
-        "Made with ❤️ using Streamlit | Text to Speech Pro © 2024"
+        "Made with ❤️ using Streamlit | Text to Speech Pro © 2026"
         "</div>",
         unsafe_allow_html=True
     )
