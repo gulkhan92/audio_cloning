@@ -1,43 +1,77 @@
-# Text to Speech Converter
+# Text to Speech Application
 
-## Description
-This project is a simple Text to Speech Converter web application built using Streamlit and the Google Text-to-Speech (gTTS) library. It allows users to input text, convert it to speech, and play the generated audio directly within the app.
+## Overview
+A professional Text-to-Speech web application with multiple TTS modes including basic Google TTS, advanced Coqui TTS, and voice cloning capabilities.
 
 ## Features
-- User-friendly web interface for text input.
-- Converts text to speech using gTTS.
-- Saves the generated speech as an MP3 file (`welcome.mp3`).
-- Plays the generated audio within the app.
+- **Basic TTS**: Quick text-to-speech using Google gTTS
+- **Advanced TTS**: High-quality speech using Coqui TTS
+- **Voice Cloning**: Clone your voice from reference audio
+- **Audio Format Conversion**: Convert between MP3 and WAV formats
 
 ## Installation
 
-1. Clone the repository or download the project files.
-2. Install the required Python packages:
-   ```bash
-   pip install streamlit gtts ipython
-   ```
+1. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the application:
+```bash
+streamlit run app.py
+```
 
 ## Usage
 
-1. Run the Streamlit app:
-   ```bash
-   streamlit run TTS.py
-   ```
-2. Enter the text you want to convert to speech in the text area.
-3. Click the **Process** button to generate the speech audio.
-4. Click the **Play** button to listen to the generated audio.
+### Basic TTS
+1. Enter your text in the text area
+2. Select language (default: English)
+3. Click "Convert to Speech" button
+4. Download or play the generated audio
+
+### Advanced TTS
+1. Enter your text
+2. Choose from available models
+3. Click "Generate Speech"
+4. Download or play the result
+
+### Voice Cloning
+1. Upload a reference audio file (5-10 seconds)
+2. Enter text to speak
+3. Click "Clone Voice"
+4. Listen to or download the cloned voice
+
+## Project Structure
+```
+Text to Speech/
+├── app.py                 # Main Streamlit application
+├── requirements.txt       # Python dependencies
+├── utils/
+│   ├── __init__.py
+│   ├── tts_basic.py      # Basic gTTS functionality
+│   ├── tts_advanced.py   # Coqui TTS functionality
+│   ├── voice_clone.py    # Voice cloning
+│   └── audio_utils.py    # Audio conversion utilities
+├── models/
+│   ├── __init__.py
+│   └── schemas.py        # Pydantic schemas for validation
+└── README.md
+```
 
 ## Dependencies
-- [Streamlit](https://streamlit.io/) - For building the web app interface.
-- [gTTS (Google Text-to-Speech)](https://pypi.org/project/gTTS/) - For converting text to speech.
-- [IPython](https://ipython.org/) - For audio playback support.
-
-## File Structure
-- `TTS.py` - Main Streamlit application script.
-- `welcome.mp3` - Generated audio file after processing text input.
+- Streamlit - Web framework
+- gTTS - Google Text-to-Speech
+- TTS - Coqui Text-to-Speech
+- Pydantic - Data validation
+- SoundFile - Audio file handling
+- Librosa - Audio processing
 
 ## License
-This project is licensed under the MIT License.
+MIT License
 
-## Author
-Created by the Text to Speech project team.

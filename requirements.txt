@@ -1,3 +1,26 @@
+# Streamlit Web Framework
 streamlit==1.24.1
-gtts==2.5.4
-ipython==8.14.0
+streamlit-webrtc==0.47.3
+
+# Text-to-Speech Libraries
+gtts==2.5.1
+TTS==0.21.0
+
+# Data Validation
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Audio Processing
+soundfile==0.12.1
+librosa==0.10.1
+pydub==0.25.1
+numpy==1.26.3
+
+# Utilities
+ipython==8.18.1
+python-dotenv==1.0.0
+
+# UI Enhancements
+matplotlib==3.8.2
+pillow==10.1.0
+
