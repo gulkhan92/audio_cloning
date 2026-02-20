@@ -29,15 +29,15 @@ st.set_page_config(
 # Custom CSS for professional look
 CUSTOM_CSS = """
 <style>
-    /* Main theme */
+    /* Main theme - Light background for better readability */
     .stApp {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         min-height: 100vh;
     }
     
     /* Headers */
     h1, h2, h3 {
-        color: #e94560 !important;
+        color: #1a1a2e !important;
         font-family: 'Segoe UI', sans-serif;
         font-weight: 700;
     }
@@ -51,7 +51,7 @@ CUSTOM_CSS = """
     
     .title-container h1 {
         font-size: 3rem;
-        background: linear-gradient(90deg, #e94560, #f5af19);
+        background: linear-gradient(90deg, #e94560, #0f3460);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -59,18 +59,18 @@ CUSTOM_CSS = """
     }
     
     .title-container p {
-        color: #a0a0a0;
+        color: #333333;
         font-size: 1.2rem;
     }
     
     /* Card styling */
     .card {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.9);
         border-radius: 15px;
         padding: 1.5rem;
         margin: 1rem 0;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
     .card:hover {
@@ -98,23 +98,29 @@ CUSTOM_CSS = """
     
     /* Secondary button */
     .stButton > button[kind="secondary"] {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        color: #1a1a2e;
     }
     
     .stButton > button[kind="secondary"]:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(240, 240, 240, 0.9);
     }
     
-    /* Input styling */
+    /* Input styling - Light background with dark text */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea,
     .stSelectbox > div > div > div {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        color: #ffffff;
+        color: #1a1a2e;
         padding: 0.75rem;
+    }
+    
+    .stTextInput > div > div > input::placeholder,
+    .stTextArea > div > div > textarea::placeholder {
+        color: #666666;
     }
     
     .stTextInput > div > div > input:focus,
@@ -125,8 +131,14 @@ CUSTOM_CSS = """
     
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background: rgba(0, 0, 0, 0.3);
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Sidebar text */
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] div {
+        color: #1a1a2e !important;
     }
     
     /* Tabs */
@@ -135,15 +147,17 @@ CUSTOM_CSS = """
     }
     
     .stTabs [data-baseweb="tab"] {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.8);
         border-radius: 10px 10px 0 0;
         padding: 10px 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        color: #1a1a2e;
     }
     
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
         border-color: #e94560;
+        color: white !important;
     }
     
     /* Success/Error messages */
@@ -153,20 +167,35 @@ CUSTOM_CSS = """
     }
     
     .stSuccess {
-        background: rgba(0, 255, 128, 0.1);
-        border: 1px solid rgba(0, 255, 128, 0.3);
+        background: rgba(0, 255, 128, 0.15);
+        border: 1px solid rgba(0, 255, 128, 0.5);
+        color: #006644;
     }
     
     .stError {
-        background: rgba(255, 0, 85, 0.1);
-        border: 1px solid rgba(255, 0, 85, 0.3);
+        background: rgba(255, 0, 85, 0.15);
+        border: 1px solid rgba(255, 0, 85, 0.5);
+        color: #cc0000;
+    }
+    
+    .stWarning {
+        background: rgba(255, 153, 0, 0.15);
+        border: 1px solid rgba(255, 153, 0, 0.5);
+        color: #994d00;
+    }
+    
+    .stInfo {
+        background: rgba(51, 153, 255, 0.15);
+        border: 1px solid rgba(51, 153, 255, 0.5);
+        color: #004080;
     }
     
     /* File uploader */
     .stFileUploader > div {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.9);
         border-radius: 10px;
         padding: 1rem;
+        border: 1px dashed rgba(0, 0, 0, 0.2);
     }
     
     /* Progress bar */
@@ -179,9 +208,13 @@ CUSTOM_CSS = """
         color: #e94560;
     }
     
+    [data-testid="stMetricLabel"] {
+        color: #333333;
+    }
+    
     /* Divider */
     hr {
-        border-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(0, 0, 0, 0.1);
     }
     
     /* Animations */
@@ -196,10 +229,10 @@ CUSTOM_CSS = """
     
     /* Custom container */
     .feature-card {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.9);
         border-radius: 15px;
         padding: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
         text-align: center;
         transition: all 0.3s ease;
     }
@@ -227,6 +260,38 @@ CUSTOM_CSS = """
         padding: 1rem;
         border-radius: 0 10px 10px 0;
         margin: 1rem 0;
+        color: #1a1a2e;
+    }
+    
+    /* General text color for Streamlit elements */
+    .stMarkdown {
+        color: #1a1a2e !important;
+    }
+    
+    p, label {
+        color: #1a1a2e !important;
+    }
+    
+    /* Checkbox and radio button text */
+    .stCheckbox label,
+    .stRadio div {
+        color: #1a1a2e !important;
+    }
+    
+    /* Slider text */
+    .stSlider label {
+        color: #1a1a2e !important;
+    }
+    
+    /* Caption text */
+    .stCaption {
+        color: #666666 !important;
+    }
+    
+    /* Expander */
+    .streamlit-expanderHeader {
+        background: rgba(255, 255, 255, 0.8) !important;
+        color: #1a1a2e !important;
     }
 </style>
 """
