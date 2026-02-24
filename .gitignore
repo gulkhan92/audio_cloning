@@ -1,5 +1,3 @@
-# Create .gitignore file
-cat > .gitignore << EOF
 # Python virtual environment
 .venv/
 venv/
@@ -23,4 +21,15 @@ __pycache__/
 # IDE files
 .vscode/
 .idea/
-EOF
+
+# Generated outputs
+outputs/
+temp/
+*.wav
+*.mp3
+*.ogg
+
+# MacOS
+.DS_Store
+
+.DS_Store
