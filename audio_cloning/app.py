@@ -23,7 +23,18 @@ st.set_page_config(
     page_title="Voice Cloning Pro",
     page_icon="🎤",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/gulkhan92/audio_cloning',
+        'Report a bug': 'https://github.com/gulkhan92/audio_cloning/issues',
+        'About': '''
+        ## Voice Cloning Pro
+        A professional voice cloning application powered by Coqui TTS.
+        
+        **Version:** 1.0.0
+        **License:** MIT
+        '''
+    }
 )
 
 # Custom CSS for professional look
@@ -36,7 +47,7 @@ CUSTOM_CSS = """
     }
     
     /* Headers */
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
         color: #ffffff !important;
         font-family: 'Segoe UI', sans-serif;
         font-weight: 700;
@@ -61,6 +72,13 @@ CUSTOM_CSS = """
     .title-container p {
         color: #b0b0b0;
         font-size: 1.2rem;
+    }
+    
+    /* Subtitle styling */
+    .subtitle {
+        color: #a0a0a0;
+        font-size: 1rem;
+        margin-top: -0.5rem;
     }
     
     /* Card styling */
@@ -116,6 +134,13 @@ CUSTOM_CSS = """
     .stButton > button:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 30px rgba(0, 217, 255, 0.5);
+    }
+    
+    .stButton > button:disabled {
+        background: linear-gradient(135deg, #666 0%, #888 100%);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
     }
     
     /* Secondary button */
@@ -220,6 +245,10 @@ CUSTOM_CSS = """
         border: 2px dashed rgba(255, 255, 255, 0.2);
     }
     
+    .stFileUploader > div:hover {
+        border-color: #00d9ff;
+    }
+    
     /* Progress bar */
     .stProgress > div > div > div {
         background: linear-gradient(90deg, #00d9ff, #a855f7);
@@ -275,6 +304,15 @@ CUSTOM_CSS = """
         color: #ffffff;
     }
     
+    /* Warning box */
+    .warning-box {
+        background: rgba(255, 153, 0, 0.1);
+        border-left: 4px solid #ff9900;
+        padding: 1rem;
+        border-radius: 0 10px 10px 0;
+        margin: 0.5rem 0;
+    }
+    
     /* General text */
     .stMarkdown {
         color: #ffffff !important;
@@ -316,6 +354,25 @@ CUSTOM_CSS = """
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    
+    /* Loading spinner */
+    .stSpinner > div {
+        border-top-color: #00d9ff !important;
+    }
+    
+    /* Download button special styling */
+    .stDownloadButton > button {
+        background: linear-gradient(135deg, #00ff88 0%, #00d9ff 100%);
+        color: #1a1a2e;
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
     }
 </style>
 """
