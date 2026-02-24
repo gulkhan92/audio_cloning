@@ -555,19 +555,19 @@ def render_voice_clone():
     
     st.markdown("""
     <div class="info-box">
-        <strong>ℹ️ Voice Cloning:</strong> Upload a reference audio (5-30 seconds) of your voice,
-        and the AI will clone it to speak your text.
+        <strong>🎤 Voice Cloning:</strong> Upload a reference audio (5-30 seconds) of your voice,
+        and the AI will clone it to speak your text with incredible accuracy.
     </div>
     """, unsafe_allow_html=True)
     
     col1, col2 = st.columns([1, 1])
     
     with col1:
-        st.markdown("### 🎤 Reference Audio")
+        st.markdown("### 📤 Upload Reference Voice")
         
-        # File uploader
+        # File uploader with drag and drop
         uploaded_file = st.file_uploader(
-            "Upload voice reference (MP3, WAV)",
+            "Drag & drop your voice sample (MP3, WAV, OGG)",
             type=['mp3', 'wav', 'ogg'],
             key="clone_audio"
         )
@@ -586,25 +586,46 @@ def render_voice_clone():
             validation = voice_clone.validate_reference_audio(str(temp_audio_path))
             
             if validation.get("valid"):
-                st.success(f"✅ Audio valid: {validation['duration']}s, {validation['sample_rate']}Hz")
+                st.success(f"✅ Audio valid: {validation['duration']}s | {validation['sample_rate']}Hz | {validation['channels']}")
+                
+                # Display audio player
+                st.markdown("#### 🎧 Preview Reference Voice")
+                st.audio(str(temp_audio_path), format="audio/wav")
             else:
                 st.error(f"❌ Invalid audio: {validation.get('message')}")
                 
     with col2:
-        st.markdown("### 🌐 Language")
+        st.markdown("### ⚙️ Voice Settings")
         
         # Language selection
         languages = VoiceClone.get_supported_languages()
         language = st.selectbox(
-            "Select Language",
+            "Target Language",
             options=list(languages.keys()),
             format_func=lambda x: languages[x],
             key="clone_language"
         )
+        
+        # Voice style/preset
+        st.markdown("#### 🎭 Voice Style")
+        voice_style = st.select_slider(
+            "Select voice characteristics",
+            options=["Neutral", "Formal", "Casual", "Emotional", "Broadcast"],
+            value="Neutral"
+        )
+        
+        # Speed control
+        speed = st.slider("Speaking Speed", min_value=0.5, max_value=1.5, value=1.0, step=0.1)
+        
+        # Pitch control
+        pitch = st.slider("Pitch Adjustment", min_value=-12, max_value=12, value=0, step=1)
     
+    st.markdown("---")
+    
+    # Text input section
     st.markdown("### 📝 Text to Speak")
     text_input = st.text_area(
-        "Enter text (max 2000 characters)",
+        "Enter text for your cloned voice (max 2000 characters)",
         height=150,
         placeholder="Enter the text you want the cloned voice to speak...",
         key="clone_text",
@@ -612,60 +633,109 @@ def render_voice_clone():
     )
     
     if text_input:
-        st.caption(f"Characters: {len(text_input)}/2000")
+        char_count = len(text_input)
+        st.caption(f"📊 Characters: {char_count}/2000")
+        
+        # Character count progress bar
+        progress = min(char_count / 2000, 1.0)
+        st.progress(progress)
     
     st.markdown("---")
     
-    # Clone button
-    if st.button("🎵 Clone Voice", key="clone_voice"):
+    # Clone button with enhanced styling
+    col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+    
+    with col_btn2:
+        clone_button = st.button(
+            "🎵 Clone Voice & Generate Speech", 
+            key="clone_voice",
+            use_container_width=True
+        )
+    
+    if clone_button:
         if not uploaded_file:
-            st.error("Please upload a reference audio file.")
+            st.error("⚠️ Please upload a reference audio file first.")
         elif not text_input.strip():
-            st.error("Please enter some text to speak.")
+            st.error("⚠️ Please enter some text to speak.")
         else:
-            with st.spinner("Cloning voice... This may take a moment."):
-                try:
-                    # Create request
-                    request = VoiceCloneRequest(
-                        text=text_input,
-                        language=language
-                    )
+            # Progress message
+            progress_placeholder = st.empty()
+            progress_placeholder.info("🔄 Initializing voice cloning model...")
+            
+            try:
+                # Create request
+                request = VoiceCloneRequest(
+                    text=text_input,
+                    language=language
+                )
+                
+                # Update progress
+                progress_placeholder.info("🔄 Processing reference audio...")
+                
+                # Clone voice
+                voice_clone = VoiceClone()
+                result = voice_clone.clone_voice(
+                    request=request,
+                    reference_audio_path=str(temp_audio_path)
+                )
+                
+                if result.success:
+                    progress_placeholder.success("✅ Voice cloned successfully!")
                     
-                    # Clone voice
-                    voice_clone = VoiceClone()
-                    result = voice_clone.clone_voice(
-                        request=request,
-                        reference_audio_path=str(temp_audio_path)
-                    )
+                    # Display results in a nice card
+                    st.markdown("""
+                    <div class="card">
+                        <h3>🎧 Generated Audio</h3>
+                    </div>
+                    """, unsafe_allow_html=True)
                     
-                    if result.success:
-                        st.success(result.message)
-                        
-                        # Display audio player
-                        st.markdown("### 🎧 Cloned Voice Audio")
-                        st.audio(result.file_path, format="audio/wav")
-                        
-                        # Download button
-                        with open(result.file_path, "rb") as f:
+                    # Display audio player
+                    st.audio(result.file_path, format="audio/wav")
+                    
+                    # Get audio info
+                    audio_info = AudioUtils.get_audio_info(result.file_path)
+                    if audio_info.get("success"):
+                        col_info1, col_info2, col_info3 = st.columns(3)
+                        with col_info1:
+                            st.metric("Duration", f"{audio_info.get('duration', 0)}s")
+                        with col_info2:
+                            st.metric("Sample Rate", f"{audio_info.get('sample_rate', 0)}Hz")
+                        with col_info3:
+                            st.metric("File Size", f"{audio_info.get('file_size_mb', 0)}MB")
+                    
+                    # Download button
+                    with open(result.file_path, "rb") as f:
+                        st.download_button(
+                            label="⬇️ Download Cloned Voice Audio",
+                            data=f.read(),
+                            file_name="cloned_voice.wav",
+                            mime="audio/wav"
+                        )
+                    
+                    # Also offer MP3 option
+                    mp3_path = result.file_path.replace('.wav', '.mp3')
+                    if AudioUtils.convert_format(result.file_path, mp3_path):
+                        with open(mp3_path, "rb") as f:
                             st.download_button(
-                                label="⬇️ Download Audio",
+                                label="⬇️ Download as MP3",
                                 data=f.read(),
-                                file_name="cloned_voice.wav",
-                                mime="audio/wav"
+                                file_name="cloned_voice.mp3",
+                                mime="audio/mp3"
                             )
-                        
-                        # Add to history
-                        st.session_state.history.append({
-                            "type": "Voice Cloning",
-                            "text": text_input[:100] + "...",
-                            "language": language,
-                            "timestamp": datetime.now().isoformat()
-                        })
-                    else:
-                        st.error(f"Error: {result.error}")
-                        
-                except Exception as e:
-                    st.error(f"Voice cloning failed: {str(e)}")
+                    
+                    # Add to history
+                    st.session_state.history.append({
+                        "type": "Voice Cloning",
+                        "text": text_input[:100] + "...",
+                        "language": language,
+                        "style": voice_style,
+                        "timestamp": datetime.now().isoformat()
+                    })
+                else:
+                    progress_placeholder.error(f"❌ Error: {result.error}")
+                    
+            except Exception as e:
+                progress_placeholder.error(f"❌ Voice cloning failed: {str(e)}")
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -720,7 +790,7 @@ def main():
     st.markdown("---")
     st.markdown(
         "<div style='text-align: center; color: #888; padding: 1rem;'>"
-        "Made with ❤️ using Streamlit | Text to Speech Pro © 2026"
+        "Made with ❤️ using Streamlit | Text to Speech Pro © 2026\]"
         "</div>",
         unsafe_allow_html=True
     )
