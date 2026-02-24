@@ -1,6 +1,6 @@
-# Voice Cloning Pro
+# Audio Cloning Pro - Text to Speech
 
-A professional voice cloning web application powered by Coqui TTS.
+A professional voice cloning web application powered by Coqui TTS. Transform any voice sample into natural speech with AI-powered text-to-speech technology.
 
 ## Features
 
